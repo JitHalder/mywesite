@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Visitor Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Visitor Info</h1>
+    <pre id="visitor-info"></pre>
+    <script>
+        function displayVisitorInfo() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://api.ipify.org/?format=json', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var ipAddress = response.ip;
+                    var port = window.location.port;
+                    var packetSize = xhr.getResponseHeader('content-length');
+                    var serverIP = window.location.hostname;
+
+                    var output = 'Visitor IP Address: ' + ipAddress + '\n' +
+                        'Visitor Port Number: ' + port + '\n' +
+                        'Packet Size: ' + packetSize + '\n' +
+                        'Server IP Address: ' + serverIP;
+
+                    document.getElementById('visitor-info').textContent = output;
+                }
+            };
+            xhr.send();
+        }
+
+        window.onload = function () {
+            displayVisitorInfo();
+        };
+    </script>
+</body>
+
+</html>
